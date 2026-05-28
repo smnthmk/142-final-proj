@@ -1,0 +1,435 @@
+{
+    "courses": [
+        {
+            "course_code": "CMSC 10",
+            "name": "Introduction to Computing",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 1,
+            "prerequisites": []
+        },
+        {
+            "course_code": "CMSC 11",
+            "name": "Introduction to Computer Science",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 1,
+            "prerequisites": []
+        },
+        {
+            "course_code": "CMSC 56",
+            "name": "Discrete Mathematical Structures in Computer Science 1",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 1,
+            "prerequisites": []
+        },
+        {
+            "course_code": "Math 18",
+            "name": "Precalculus Mathematics",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 1,
+            "prerequisites": []
+        },
+        {
+            "course_code": "COMM 10",
+            "name": "Critical Perspective in Communication",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 1,
+            "prerequisites": []
+        },
+        {
+            "course_code": "Math 53",
+            "name": "Calculus I",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 1,
+            "prerequisites": [
+                "Math 18"
+            ]
+        },
+        {
+            "course_code": "CMSC 57",
+            "name": "Discrete Mathematical Structures in Computer Science 2",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 1,
+            "prerequisites": [
+                "CMSC 56"
+            ]
+        },
+        {
+            "course_code": "CMSC 21",
+            "name": "Fundamentals of Programming",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 1,
+            "prerequisites": [
+                "CMSC 11"
+            ]
+        },
+        {
+            "course_code": "Math 54",
+            "name": "Calculus II",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "Math 53"
+            ]
+        },
+        {
+            "course_code": "CMSC 123",
+            "name": "Data Structures",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "CMSC 21",
+                "CMSC 57"
+            ]
+        },
+        {
+            "course_code": "Physics 71",
+            "name": "Elementary Physics I",
+            "semester_availability": [
+                "1st",
+                "2nd"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "Math 18"
+            ]
+        },
+        {
+            "course_code": "Physics 71.1",
+            "name": "Elementary Physics I Laboratory",
+            "semester_availability": [
+                "1st",
+                "2nd"
+            ],
+            "year_level": 2,
+            "prerequisites": []
+        },
+        {
+            "course_code": "CMSC 22",
+            "name": "Fundamentals of Object-Oriented Programming",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "CMSC 21"
+            ]
+        },
+        {
+            "course_code": "CMSC 127",
+            "name": "Database Systems",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "CMSC 123"
+            ]
+        },
+        {
+            "course_code": "CMSC 130",
+            "name": "Logic Design and Digital Computer Circuits",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "CMSC 11",
+                "Physics 71"
+            ]
+        },
+        {
+            "course_code": "CMSC 142",
+            "name": "Design and Analysis of Algorithms",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "CMSC 123"
+            ]
+        },
+        {
+            "course_code": "CMSC 126",
+            "name": "Web Programming",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 2,
+            "prerequisites": [
+                "CMSC 22"
+            ]
+        },
+        {
+            "course_code": "CMSC 124",
+            "name": "Design and Implementation of Programming Language",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 123"
+            ]
+        },
+        {
+            "course_code": "CMSC 128",
+            "name": "Software Engineering",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 126",
+                "CMSC 127"
+            ]
+        },
+        {
+            "course_code": "CMSC 131",
+            "name": "Introduction to Computer Organization & Machine Level Programming",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 130",
+                "CMSC 21"
+            ]
+        },
+        {
+            "course_code": "CMSC 141",
+            "name": "Automata & Language Theory",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 57"
+            ]
+        },
+        {
+            "course_code": "Stat 105",
+            "name": "Introduction to Statistical Analysis",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "Math 18"
+            ]
+        },
+        {
+            "course_code": "CMSC 134",
+            "name": "Human-Computer Interaction",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 126"
+            ]
+        },
+        {
+            "course_code": "CMSC 125",
+            "name": "Operating Systems",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 123",
+                "CMSC 131"
+            ]
+        },
+        {
+            "course_code": "CMSC 132",
+            "name": "Computer Architecture",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 131"
+            ]
+        },
+        {
+            "course_code": "Stat 106",
+            "name": "Advanced Statistical Analysis",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "Stat 105"
+            ]
+        },
+        {
+            "course_code": "CMSC 129",
+            "name": "Software Engineering 2",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 128"
+            ]
+        },
+        {
+            "course_code": "COMM 12",
+            "name": "Technical Communication",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "COMM 10"
+            ]
+        },
+        {
+            "course_code": "CMSC 195",
+            "name": "Practicum",
+            "semester_availability": [
+                "3rd"
+            ],
+            "year_level": 3,
+            "prerequisites": [
+                "CMSC 129"
+            ]
+        },
+        {
+            "course_code": "CMSC 137",
+            "name": "Data Communication and Networking",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 4,
+            "prerequisites": [
+                "CMSC 125",
+                "CMSC 132"
+            ]
+        },
+        {
+            "course_code": "CMSC 192",
+            "name": "Ethical and Professional Issues in Computing",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 4,
+            "prerequisites": []
+        },
+        {
+            "course_code": "CMSC 198.1",
+            "name": "Special Problem I",
+            "semester_availability": [
+                "1st"
+            ],
+            "year_level": 4,
+            "prerequisites": [
+                "CMSC 195",
+                "COMM 12"
+            ]
+        },
+        {
+            "course_code": "CMSC 198.2",
+            "name": "Special Problem II",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 4,
+            "prerequisites": [
+                "CMSC 198.1"
+            ]
+        },
+        {
+            "course_code": "PI 100",
+            "name": "The Life & Works of Jose Rizal",
+            "semester_availability": [
+                "2nd"
+            ],
+            "year_level": 4,
+            "prerequisites": []
+        }
+    ],
+    
+
+    "students": [
+        {
+            "student_number": "2026-54321",
+            "password": "test1",
+            "name": "Rubella Ruby Jane",
+            "year_level": 1,
+            "current_semester": "1st",
+            "completed_courses": [],
+            "in_progress_course": []
+        },
+        {
+            "student_number": "2024-12345",
+            "password": "pass123",
+            "name": "Zerzion Zeline Zueguera",
+            "year_level": 2,
+            "current_semester": "2nd",
+            "completed_courses": [
+                "CMSC 10",
+                "CMSC 11",
+                "CMSC 56",
+                "Math 18",
+                "COMM 10",
+                "Math 53",
+                "CMSC 57",
+                "CMSC 21",
+                "Math 54",
+                "CMSC 123",
+                "Physics 71",
+                "Physics 71.1",
+                "CMSC 22"
+            ],
+            "in_progress_course": [
+                "CMSC 127",
+                "CMSC 142",
+                "CMSC 126",
+                "CMSC 130"
+            ]
+        },
+        {
+            "student_number": "2024-67890",
+            "password": "comsci",
+            "name": "Sussie Selene Sergio",
+            "year_level": 2,
+            "current_semester": "2nd",
+            "completed_courses": [
+                "CMSC 10",
+                "CMSC 11",
+                "CMSC 56",
+                "Math 18",
+                "COMM 10",
+                "CMSC 21",
+                "CMSC 22"
+            ],
+            "in_progress_course": [
+                "CMSC 57",
+                "Math 53",
+                "CMSC 126",
+                "Physics 71",
+                "Physics 71.1"
+            ]
+        }
+    ]
+}
