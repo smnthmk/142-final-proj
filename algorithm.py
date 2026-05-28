@@ -1,4 +1,4 @@
-def build_graduation_plan(course_data, student_data):
+def buildGraduationPlan(course_data, student_data):
     semester_order = ["1st", "2nd", "midyear"]
 
     courses = course_data
@@ -58,14 +58,14 @@ def build_graduation_plan(course_data, student_data):
         semester_index = 0
 
     # checks if all prereqs are already completed
-    def prerequisites_completed(course):
+    def prerequisitesCompleted(course):
         for prereq in course["prerequisites"]:
             if prereq not in completed:
                 return False
         return True
 
     # checks if the course is offered in the current semester
-    def offered_this_semester(course, semester):
+    def offeredThisSemester(course, semester):
         return semester in course["semester_availability"]
 
     semester_buckets = []
@@ -88,8 +88,8 @@ def build_graduation_plan(course_data, student_data):
             course = course_map[code]
 
             if (
-                prerequisites_completed(course)
-                and offered_this_semester(course, current_semester)
+                prerequisitesCompleted(course)
+                and offeredThisSemester(course, current_semester)
             ):
                 scheduled_this_semester.append(code)
 
@@ -118,7 +118,7 @@ def build_graduation_plan(course_data, student_data):
         if safety_counter > max_iterations:
             return {
                 "success": False,
-                "reason": "Some courses could not be scheduled. Possible causes: missing prerequisite, circular prerequisite, seasonal conflict, or lower-year courses not completed.",
+                "reason": "Some courses could not be scheduled. Possible causes: missing prerequisite, circular prerequisite, or seasonal conflict",
                 "adjacency_list": adjacency_list,
                 "in_degree": in_degree,
                 "semester_buckets": semester_buckets,
@@ -128,7 +128,7 @@ def build_graduation_plan(course_data, student_data):
             }
 
     # compute the projected year level and semester of graduation
-    projected_graduation = compute_projected_graduation(
+    projected_graduation = computeProjectedGraduation(
         student_data.get("current_year", 1),
         student_data.get("semester", "1st"),
         semester_buckets
@@ -143,7 +143,7 @@ def build_graduation_plan(course_data, student_data):
     }
 
 
-def compute_projected_graduation(current_year, current_semester, semester_buckets):
+def computeProjectedGraduation(current_year, current_semester, semester_buckets):
     year = current_year
     semester = current_semester
 
