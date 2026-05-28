@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOMSAI: ROUTE TO SABLAY</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>KOMSAI: ROUTE TO SABLAY</h1>
+    </header>
+
+    <main class="login-container">
+        <h2>A KOMSAI Major Course Planner</h2>
+        
+        <div class="info-note">
+            <p>Generate a major-specific study plan and tentative graduation date from your current coursemap.</p>
+        </div>
+        
+        <p class="exclusion-text">
+            <strong>Non-prerequisite GEs, contingent Midyear courses, PE, and NSTP are excluded.</strong>
+        </p>
+        
+        <p class="login-prompt">Log-in to start validating your roadmap</p>
+
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label for="student-number">STUDENT NUMBER:</label>
+                <input type="text" id="student-number" name="student-number" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">PASSWORD</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit">LOG-IN</button>
+        </form>
+    </main>
+</body>
+</html>

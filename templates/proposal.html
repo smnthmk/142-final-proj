@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOMSAI: ROUTE TO SABLAY</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>KOMSAI: ROUTE TO SABLAY</h1>
+    </header>
+
+    <main class="proposal-container">
+        <h2>Plan Your Semester</h2>
+
+        <div class="info-note">
+            <p>Select the courses you intend to take for the semester. Only eligible courses are shown.</p>
+        </div>
+
+        <form action="/proposal" method="POST">
+            <div class="course-list-panel">
+
+                <div class="panel-header">
+                    <span class="panel-meta" id="selection-count">0 courses selected</span>
+                </div>
+
+                <!--hardcoded, change later w GET sa backend-->
+                <ul class="course-list" id="course-list">
+
+                    <li class="course-row">
+                        <label class="course-row-label" for="CMSC 142">
+                            <input type="checkbox" class="course-check" id="KOM101" name="selected_courses" value="KOM101">
+                            <span class="course-row-code">CMSC 142</span>
+                            <span class="course-row-name">Analysis of Algorithms</span>
+                        </label>
+                    </li>
+
+
+                    <li class="course-row">
+                        <label class="course-row-label" for="CMSC126">
+                            <input type="checkbox" class="course-check" id="KOM103" name="selected_courses" value="KOM103">
+                            <span class="course-row-code">CMSC 126</span>
+                            <span class="course-row-name">Web Programming</span>
+                        </label>
+                    </li>
+
+                    <li class="course-row">
+                        <label class="course-row-label" for="CMSC127">
+                            <input type="checkbox" class="course-check" id="KOM112" name="selected_courses" value="KOM112">
+                            <span class="course-row-code">CMSC 127</span>
+                            <span class="course-row-name">Data Structures and Algorithms</span>
+                        </label>
+                    </li>
+
+                    <li class="course-row">
+                        <label class="course-row-label" for="CMSC130">
+                            <input type="checkbox" class="course-check" id="KOM113" name="selected_courses" value="KOM113">
+                            <span class="course-row-code">CMSC 130</span>
+                            <span class="course-row-name">Logic Design and Circuits</span>
+                        </label>
+                    </li>
+
+                <div class="panel-footer">
+                    <button type="submit">CONFIRM</button>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.course-check');
+        const countEl    = document.getElementById('selection-count');
+
+        function updateCount() {
+            const n = [...checkboxes].filter(cb => cb.checked).length;
+            countEl.textContent = n === 0
+                ? '0 courses selected'
+                : `${n} course${n > 1 ? 's' : ''} selected`;
+        }
+
+        checkboxes.forEach(cb => cb.addEventListener('change', updateCount));
+    </script>
+</body>
+</html>
