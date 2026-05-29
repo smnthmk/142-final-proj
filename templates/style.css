@@ -386,7 +386,7 @@ header h1 {
 
 .dash-logout-form {
     position: absolute;
-    top: 16px;
+    top: 60px;
     right: 16px; 
 }
 
@@ -557,4 +557,23 @@ header h1 {
 /* Matching legend box */
 .bg-next-sem { 
     background-color: #cce5ff; 
+}
+
+
+/*    back button     */
+.dash-back-form {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
+.dash-back-form button {
+    margin-top: 0;
+    padding: 8px 24px;
+    font-size: 0.85rem;
+    background-color: #014421;
+}
+
+.dash-back-form button:hover {
+    background-color: #026633;
 }
