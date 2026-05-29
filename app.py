@@ -39,7 +39,7 @@ def find_student(student_number):
 def normalize_student_for_algorithm(student, selected_courses=None):
     in_progress = selected_courses
     if in_progress is None:
-        in_progress = student.get("in_progress_course", [])
+        in_progress = student.get("in_progress_courses", [])
 
     return {
         "current_year": student.get("year_level", 1),
@@ -58,20 +58,28 @@ def prerequisites_completed(course, completed_courses):
 
 def eligible_courses_for_student(student, courses):
     completed_courses = set(student.get("completed_courses", []))
-    in_progress_courses = set(student.get("in_progress_course", []))
-    completed_or_current = completed_courses | in_progress_courses
+    in_progress_courses = set(student.get("in_progress_courses", []))
+    
+    projected_completed = completed_courses | in_progress_courses
+
     current_semester = student.get("current_semester", "1st")
+    target_semester = "2nd" if current_semester == "1st" else "1st"
 
     eligible = []
     for course in courses:
         code = course.get("course_code")
-        if not code or code in completed_or_current:
+        
+        if not code or code in projected_completed:
             continue
-        if current_semester not in course.get("semester_availability", []):
+            
+        if target_semester not in course.get("semester_availability", []):
             continue
-        if not prerequisites_completed(course, completed_or_current):
+            
+        if not prerequisites_completed(course, projected_completed):
             continue
+            
         eligible.append(course)
+        
     return eligible
 
 
@@ -161,6 +169,7 @@ def dashboard():
         student=student,
         selected_courses=session.get("selected_courses", []),
         result=result,
+        courses=courses
     )
 
 

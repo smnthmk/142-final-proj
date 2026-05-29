@@ -6,7 +6,7 @@
         "year_level": 1,
         "current_semester": "1st",
         "completed_courses": [],
-        "in_progress_course": []
+        "in_progress_courses": []
     },
     {
         "student_number": "2024-12345",
@@ -29,7 +29,7 @@
             "Physics 71.1",
             "CMSC 22"
         ],
-        "in_progress_course": [
+        "in_progress_courses": [
             "CMSC 127",
             "CMSC 142",
             "CMSC 126",
@@ -51,7 +51,7 @@
             "CMSC 21",
             "CMSC 22"
         ],
-        "in_progress_course": [
+        "in_progress_courses": [
             "CMSC 57",
             "Math 53",
             "CMSC 126",

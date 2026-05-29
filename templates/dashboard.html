@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOMSAI: ROUTE TO SABLAY - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    {# MACRO: Calculates course status colors dynamically #}
+    {% macro get_status(course, student, selected_courses, result) %}
+        
+        {# Grab the course codes planned for the immediate next semester #}
+        {% set next_courses = [] %}
+        {% if result.success and result.semester_buckets | length > 0 %}
+            {% for c in result.semester_buckets[0].courses %}
+                {% set _ = next_courses.append(c.course_code) %}
+            {% endfor %}
+        {% endif %}
+
+        {% if course.course_code in student.completed_courses %}
+            status-completed
+        {% elif course.course_code in student.in_progress_courses or course.course_code in selected_courses %}
+            status-taking
+        {% elif course.course_code in next_courses %}
+            status-next-sem
+        {% elif student.year_level > course.year_level %}
+            status-delayed
+        {% elif student.year_level == course.year_level and student.current_semester == '2nd' and '1st' in course.semester_availability and '2nd' not in course.semester_availability %}
+            status-delayed
+        {% else %}
+            status-not-taken
+        {% endif %}
+    {% endmacro %}
+
+    <header>
+        <h1>KOMSAI: ROUTE TO SABLAY</h1>
+    </header>
+
+    <main class="dash-container">
+        
+        <h2 class="dash-header-title">
+            {{ student.current_semester | capitalize }} semester, AY 2025 – 2026
+        </h2>
+
+        <div class="dash-user-info">
+            <div class="dash-photo">Photo</div>
+            <div class="dash-details">
+                <p>Student ID: <span class="light-text">{{ student.student_number }}</span></p>
+                <p>Name: <span class="light-text">{{ student.name }}</span></p>
+                <p>Degree Program: <span class="light-text">BS in Computer Science</span></p>
+                <p>Degree Level: <span class="light-text">Undergraduate</span></p>
+                <p>Year Level: <span class="light-text">{{ student.year_level }}</span></p>
+                
+                {# Dynamically calculate grad year: Extract admission year from ID + projected years #}
+                {% if result.success %}
+                    {% set admission_year = student.student_number.split('-')[0] | int %}
+                    {% set grad_year = admission_year + result.projected_graduation.year_level %}
+                    <p class="dash-grad-day">Tentative Graduation Year: {{ grad_year }} ({{ result.projected_graduation.semester }} Sem)</p>
+                {% else %}
+                    <p class="dash-grad-day" style="color: #c00000;">Graduation Plan Error: Cannot calculate</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <h3 class="dash-section-title">Course Checklist:</h3>
+        <div class="dash-legend">
+            <span class="dash-legend-item">Legend:</span>
+            <span class="dash-legend-item"><span class="dash-box bg-completed"></span> Completed Courses</span>
+            <span class="dash-legend-item"><span class="dash-box bg-taking"></span> Currently Taking</span>
+            <span class="dash-legend-item"><span class="dash-box bg-next-sem"></span> Up Next</span>
+            <span class="dash-legend-item"><span class="dash-box bg-delayed"></span> Delayed Courses</span>
+            <span class="dash-legend-item"><span class="dash-box bg-not-taken"></span> Not Taken Yet</span>
+            <span class="dash-legend-item"><span class="dash-box bg-prereq"></span> Prerequisites</span>
+        </div>
+
+        <div class="dash-checklist">
+            {% set year_numerals = ['I', 'II', 'III', 'IV'] %}
+            
+            {% for y in range(1, 5) %}
+                <div class="dash-year-block">
+                    <h4 class="dash-year-title">YEAR {{ year_numerals[y-1] }}</h4>
+
+                    {% for sem, sem_name in [('1st', 'FIRST SEMESTER:'), ('2nd', 'SECOND SEMESTER:'), ('midyear', 'MIDYEAR:')] %}
+                        
+                        {# Filter courses into strict curriculum order to prevent ["1st", "2nd"] courses from duplicating #}
+                        {% set sem_courses = [] %}
+                        {% for c in courses %}
+                            {% if c.year_level == y %}
+                                {% if sem == '1st' and '1st' in c.semester_availability %}
+                                    {% set _ = sem_courses.append(c) %}
+                                {% elif sem == '2nd' and '2nd' in c.semester_availability and '1st' not in c.semester_availability %}
+                                    {% set _ = sem_courses.append(c) %}
+                                {% elif sem == 'midyear' and 'midyear' in c.semester_availability %}
+                                    {% set _ = sem_courses.append(c) %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if sem_courses | length > 0 %}
+                            <div class="dash-sem-block">
+                                <h5 class="dash-sem-title">{{ sem_name }}</h5>
+                                <table class="dash-table">
+                                    {% for course in sem_courses %}
+                                        <tr class="{{ get_status(course, student, selected_courses, result) | trim }}">
+                                            <td class="col-code">{{ course.course_code }}</td>
+                                            <td class="col-name">{{ course.name }}</td>
+                                            <td class="col-prereq">{{ course.prerequisites | join(', ') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="dash-next-year-container">
+            <h3 class="dash-next-year-title">What to take Next School Year?</h3>
+            
+            {% if result.success %}
+                
+                {# Keep looping until we output at least one 1st Sem AND one 2nd Sem #}
+                {% set ns = namespace(found_first=false, found_second=false) %}
+                
+                {% for bucket in result.semester_buckets %}
+                    {% if not (ns.found_first and ns.found_second) %}
+                        
+                        {% if bucket.semester == '1st' %}{% set ns.found_first = true %}{% endif %}
+                        {% if bucket.semester == '2nd' %}{% set ns.found_second = true %}{% endif %}
+                        
+                        <div class="dash-sem-block">
+                            <h5 class="dash-sem-title">{{ bucket.semester | capitalize }} Semester:</h5>
+                            
+                            {% if bucket.courses | length > 0 %}
+                                <table class="dash-table">
+                                    {% for course in bucket.courses %}
+                                        {# Mark these table rows with the new blue status #}
+                                        <tr class="status-next-sem">
+                                            <td class="col-code">{{ course.course_code }}</td>
+                                            <td class="col-name">{{ course.name }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            {% else %}
+                                <p style="font-size: 0.9rem; font-style: italic;">No courses scheduled for this semester.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            {% else %}
+                <p style="color: #c00000; font-weight: 600;">Plan could not be generated: {{ result.reason }}</p>
+                {% if result.unscheduled_courses %}
+                    <p style="font-size: 0.9rem;">Problematic Courses: 
+                        {% for c in result.unscheduled_courses %}{{ c.course_code }}{% if not loop.last %}, {% endif %}{% endfor %}
+                    </p>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+    </main>
+</body>
+</html>
