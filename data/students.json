@@ -58,5 +58,44 @@
             "Physics 71",
             "Physics 71.1"
         ]
+    },
+    {
+        "student_number": "2023-45678",
+        "password": "testing midyear",
+        "name": "Rogelio Roger Rodriguez",
+        "year_level": 3,
+        "current_semester": "2nd",
+        "completed_courses": [
+            "CMSC 10",
+            "CMSC 11",
+            "CMSC 56",
+            "Math 18",
+            "COMM 10",
+            "Math 53",
+            "CMSC 57",
+            "CMSC 21",
+            "Math 54",
+            "CMSC 124",
+            "CMSC 123",
+            "Physics 71",
+            "Physics 71.1",
+            "CMSC 22",
+            "CMSC 127",
+            "CMSC 142",
+            "CMSC 126",
+            "CMSC 130",
+            "Stat 105",
+            "CMSC 128",
+            "CMSC 131",
+            "CMSC 141",
+            "CMSC 134"
+        ],
+        "in_progress_courses": [
+            "CMSC 129",
+            "Stat 106",
+            "CMSC 132",
+            "CMSC 125",
+            "COMM 12"
+        ]
     }
 ]

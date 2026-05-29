@@ -73,28 +73,45 @@ def prerequisites_completed(course, completed_courses):
 def eligible_courses_for_student(student, courses):
     completed_courses = set(student.get("completed_courses", []))
     in_progress_courses = set(student.get("in_progress_courses", []))
-    
     projected_completed = completed_courses | in_progress_courses
 
     current_semester = student.get("current_semester", "1st")
-    target_semester = "2nd" if current_semester == "1st" else "1st"
 
-    eligible = []
-    for course in courses:
-        code = course.get("course_code")
-        
-        if not code or code in projected_completed:
-            continue
-            
-        if target_semester not in course.get("semester_availability", []):
-            continue
-            
-        if not prerequisites_completed(course, projected_completed):
-            continue
-            
-        eligible.append(course)
-        
-    return eligible
+    if current_semester == "1st":
+        target_semesters = ["2nd"]
+    elif current_semester == "2nd":
+        target_semesters = ["midyear", "1st"]
+    else:
+        target_semesters = ["1st"]
+
+    eligible_by_semester = {}
+
+    for target_semester in target_semesters:
+        eligible = []
+
+        for course in courses:
+            code = course.get("course_code")
+
+            if not code or code in projected_completed:
+                continue
+
+            if target_semester not in course.get("semester_availability", []):
+                continue
+
+            if not prerequisites_completed(course, projected_completed):
+                continue
+
+            eligible.append(course)
+
+        if eligible:
+            eligible_by_semester[target_semester] = eligible
+
+    if current_semester == "2nd":
+        if eligible_by_semester.get("midyear"):
+            return eligible_by_semester["midyear"]
+        return eligible_by_semester.get("1st", [])
+
+    return eligible_by_semester.get(target_semesters[0], [])
 
 
 def login_required(view):

@@ -14,7 +14,7 @@ def buildGraduationPlan(course_data, student_data):
         course_map[code] = {
             "course_code": code,
             "name": course.get("name", ""),
-            "semester_availability": course.get("semester_availability", ["1st", "2nd"]),
+            "semester_availability": course.get("semester_availability", ["1st", "2nd", "midyear"]),
             "year_level": course["year_level"],
             "prerequisites": course.get("prerequisites", [])
         }
