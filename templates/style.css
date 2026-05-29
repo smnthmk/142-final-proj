@@ -339,11 +339,15 @@ header h1 {
    USER INFO BLOCK
    ========================================================================== */
 .dash-user-info {
+    position: relative;
     display: flex;
     background: white;
-    padding: 1.5rem;
+    width: fit-content;
+    padding: 1.5rem 130px 1.5rem 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 2rem;
     gap: 2rem;
     align-items: center;
@@ -378,6 +382,18 @@ header h1 {
     color: #28a745;
     font-weight: bold;
     font-size: 1.1rem;
+}
+
+.dash-logout-form {
+    position: absolute;
+    top: 16px;
+    right: 16px; 
+}
+
+.dash-logout-form button {
+    margin-top: 0;
+    padding: 8px 24px; 
+    font-size: 0.85rem;
 }
 
 /* ==========================================================================
@@ -517,19 +533,24 @@ header h1 {
     background: white;
     padding: 2rem;
     border-radius: 8px;
-    border-top: 4px solid #28a745; /* Green top border to indicate success/future */
+    border-top: 20px solid #014421;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .dash-next-year-title {
     font-size: 1.4rem;
-    margin-bottom: 1.5rem;
     color: #2c3e50;
+}
+
+.dash-next-year-subtitle {
+     margin-bottom: 32px; 
+     color: #014421; 
+     font-weight: bold;
 }
 
 /* --- NEW: NEXT SEMESTER STATUS --- */
 .status-next-sem {
-    background-color: #cce5ff !important; /* Soft Blue */
+    background-color: #cce5ff !important;
     color: #004085;
 }
 

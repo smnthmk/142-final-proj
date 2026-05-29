@@ -23,7 +23,14 @@ def load_json(path):
 
 
 def load_courses():
-    return load_json(COURSES_FILE)
+    courses = load_json(COURSES_FILE)
+    for course in courses:
+        if "semester_availability" in course:
+            course["semester_availability"] = [
+                "midyear" if sem == "3rd" else sem 
+                for sem in course["semester_availability"]
+            ]
+    return courses
 
 
 def load_students():
@@ -46,9 +53,7 @@ def render_login(error=None, student_number=""):
 
 
 def normalize_student_for_algorithm(student, selected_courses=None):
-    in_progress = selected_courses
-    if in_progress is None:
-        in_progress = student.get("in_progress_courses", [])
+    in_progress = student.get("in_progress_courses", [])
 
     return {
         "current_year": student.get("year_level", 1),
@@ -130,7 +135,7 @@ def login():
     return redirect(url_for("proposal"))
 
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
     session.clear()
     return redirect(url_for("index"))
@@ -181,6 +186,28 @@ def dashboard():
         student.get("in_progress_courses", []),
         session.get("selected_courses", []),
     )
+
+    if result.get("success"):
+        current_year = student.get("year_level", 1)
+        current_sem = student.get("current_semester", "1st")
+        
+        for bucket in result["semester_buckets"]:
+            # Increment year level when cycling back to a 1st semester
+            if bucket["semester"] == "1st" and current_sem in ["2nd", "midyear"]:
+                current_year += 1
+            bucket["year_level"] = current_year
+            current_sem = bucket["semester"]
+
+    if result.get("success"):
+        current_year = student.get("year_level", 1)
+        current_sem = student.get("current_semester", "1st")
+        
+        for bucket in result["semester_buckets"]:
+            # Increment year level when cycling back to a 1st semester
+            if bucket["semester"] == "1st" and current_sem in ["2nd", "midyear"]:
+                current_year += 1
+            bucket["year_level"] = current_year
+            current_sem = bucket["semester"]
 
     return render_template(
         "dashboard.html",

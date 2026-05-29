@@ -11,7 +11,7 @@
     {# MACRO: Calculates course status colors dynamically #}
     {% macro get_status(course, student, selected_courses, result) %}
         
-        {# Grab the course codes planned for the immediate next semester #}
+        {# Only the IMMEDIATE next semester should be blue #}
         {% set next_courses = [] %}
         {% if result.success and result.semester_buckets | length > 0 %}
             {% for c in result.semester_buckets[0].courses %}
@@ -21,9 +21,9 @@
 
         {% if course.course_code in student.completed_courses %}
             status-completed
-        {% elif course.course_code in student.in_progress_courses or course.course_code in selected_courses %}
+        {% elif course.course_code in student.in_progress_courses %}
             status-taking
-        {% elif course.course_code in next_courses %}
+        {% elif course.course_code in next_courses or course.course_code in selected_courses %}
             status-next-sem
         {% elif student.year_level > course.year_level %}
             status-delayed
@@ -38,29 +38,37 @@
         <h1>KOMSAI: ROUTE TO SABLAY</h1>
     </header>
 
+    <!-- RESTORED: Main container wrapper to enforce layout constraints -->
     <main class="dash-container">
         
-        <h2 class="dash-header-title">
-            {{ student.current_semester | capitalize }} semester, AY 2025 – 2026
-        </h2>
+        <div class="profile-card">
+            <h2 class="dash-header-title">Dashboard</h2>
 
-        <div class="dash-user-info">
-            <div class="dash-photo">Photo</div>
-            <div class="dash-details">
-                <p>Student ID: <span class="light-text">{{ student.student_number }}</span></p>
-                <p>Name: <span class="light-text">{{ student.name }}</span></p>
-                <p>Degree Program: <span class="light-text">BS in Computer Science</span></p>
-                <p>Degree Level: <span class="light-text">Undergraduate</span></p>
-                <p>Year Level: <span class="light-text">{{ student.year_level }}</span></p>
+            <div class="dash-user-info">
+                <div class="dash-photo">Photo</div>
                 
-                {# Dynamically calculate grad year: Extract admission year from ID + projected years #}
-                {% if result.success %}
-                    {% set admission_year = student.student_number.split('-')[0] | int %}
-                    {% set grad_year = admission_year + result.projected_graduation.year_level %}
-                    <p class="dash-grad-day">Tentative Graduation Year: {{ grad_year }} ({{ result.projected_graduation.semester }} Sem)</p>
-                {% else %}
-                    <p class="dash-grad-day" style="color: #c00000;">Graduation Plan Error: Cannot calculate</p>
-                {% endif %}
+                <div class="dash-details">
+                    <p>Student ID: <span class="light-text">{{ student.student_number }}</span></p>
+                    <p>Name: <span class="light-text">{{ student.name }}</span></p>
+                    <p>Degree Program: <span class="light-text">BS in Computer Science</span></p>
+                    <p>Degree Level: <span class="light-text">Undergraduate</span></p>
+                    <p>Year Level: <span class="light-text">{{ student.year_level }}</span></p>
+                    
+                    {# Dynamically calculate grad year: Extract admission year from ID + projected years #}
+                    {% if result.success %}
+                        {% set admission_year = student.student_number.split('-')[0] | int %}
+                        {% set grad_year = admission_year + result.projected_graduation.year_level %}
+                        <p class="dash-grad-day">Tentative Graduation Year: {{ grad_year }} ({{ result.projected_graduation.semester }} Sem)</p>
+                    {% else %}
+                        <p class="dash-grad-day" style="color: #c00000;">Graduation Plan Error: Cannot calculate</p>
+                    {% endif %}
+                </div>
+                
+                <form action="/logout" method="POST" class="dash-logout-form">
+                    <div class="logout-btn">
+                        <button type="submit">LOG-OUT</button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -120,59 +128,56 @@
 
         <div class="dash-next-year-container">
             <h3 class="dash-next-year-title">What to take Next School Year?</h3>
+            <h4 class="dash-next-year-subtitle">Year {{ student.year_level + 1 }}</h4>
             
             {% if result.success %}
-                
-                {# Keep looping until we output at least one 1st Sem AND one 2nd Sem #}
-                {% set ns = namespace(found_first=false, found_second=false) %}
+                {# Set up state tracking variables inside Jinja #}
+                {% set ns = namespace(has_courses=false, year=student.year_level, prev_sem=student.current_semester) %}
                 
                 {% for bucket in result.semester_buckets %}
-                    {% if not (ns.found_first and ns.found_second) %}
-                        
-                        {% if bucket.semester == '1st' %}{% set ns.found_first = true %}{% endif %}
-                        {% if bucket.semester == '2nd' %}{% set ns.found_second = true %}{% endif %}
-                        
-                        <div class="dash-sem-block">
-                            <h5 class="dash-sem-title">{{ bucket.semester | capitalize }} Semester:</h5>
-                            
-                            {% if bucket.courses | length > 0 %}
+                    {# Track chronological academic year progression inline #}
+                    {% if bucket.semester == '1st' and ns.prev_sem in ['2nd', 'midyear'] %}
+                        {% set ns.year = ns.year + 1 %}
+                    {% endif %}
+                    {% set ns.prev_sem = bucket.semester %}
+                    
+                    {# CONDITION: Include if it is the absolute next semester (loop.first) OR part of next year level #}
+                    {% if loop.first or ns.year == student.year_level + 1 %}
+                        {% if bucket.courses | length > 0 %}
+                            {% set ns.has_courses = true %}
+                            <div class="dash-sem-block">
+                                <h5 class="dash-sem-title">
+                                    {{ bucket.semester | capitalize }} Semester:
+                                </h5>
                                 <table class="dash-table">
                                     {% for course in bucket.courses %}
-                                        {# Mark these table rows with the new blue status #}
-                                        <tr class="status-next-sem">
+                                        <tr class="status-not-taken">
                                             <td class="col-code">{{ course.course_code }}</td>
                                             <td class="col-name">{{ course.name }}</td>
                                         </tr>
                                     {% endfor %}
                                 </table>
-                            {% else %}
-                                <p style="font-size: 0.9rem; font-style: italic;">No courses scheduled for this semester.</p>
-                            {% endif %}
-                        </div>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
 
-            {% else %}
-                <p style="color: #c00000; font-weight: 600;">Plan could not be generated: {{ result.reason }}</p>
-                {% if result.unscheduled_courses %}
-                    <p style="font-size: 0.9rem;">Problematic Courses: 
-                        {% for c in result.unscheduled_courses %}{{ c.course_code }}{% if not loop.last %}, {% endif %}{% endfor %}
-                    </p>
+                {% if not ns.has_courses %}
+                    <p style="font-style: italic;">No upcoming courses scheduled.</p>
                 {% endif %}
+            {% else %}
+                <p style="color: #c00000; font-weight: 600;">Plan Error: {{ result.reason }}</p>
             {% endif %}
-        </div>
 
-        <div class="dash-next-year-container">
             <h3 class="dash-next-year-title">Course Dependency Graph</h3>
-            <iframe 
-                src="/static/course_graph.html" 
-                width="100%" 
-                height="650px" 
-                frameborder="0"
-                style="border: 1px solid #cccccc; border-radius: 6px;">
-            </iframe>
+                <iframe 
+                    src="/static/course_graph.html" 
+                    width="100%" 
+                    height="650px" 
+                    frameborder="0"
+                    style="border: 1px solid #cccccc; border-radius: 6px;">
+                </iframe>
         </div>
-        
     </main>
 </body>
 </html>
