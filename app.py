@@ -6,6 +6,7 @@ from pathlib import Path
 from flask import Flask, flash, redirect, render_template, request, send_from_directory, session, url_for
 
 from algorithm import buildGraduationPlan
+from graph import study_plan_graph
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -163,6 +164,13 @@ def dashboard():
     courses = load_courses()
     algorithm_input = normalize_student_for_algorithm(student, selected_courses=selected_courses)
     result = buildGraduationPlan(courses, algorithm_input)
+    
+    study_plan_graph(
+        courses,
+        student.get("completed_courses", []),
+        student.get("in_progress_courses", []),
+        session.get("selected_courses", []),
+    )
 
     return render_template(
         "dashboard.html",

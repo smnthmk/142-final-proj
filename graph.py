@@ -2,11 +2,11 @@ import os
 from pyvis.network import Network
 
 STATUS_COLOR = {
-    "completed": "#B4FFB6",  # already completed
-    "in_progress": "#FFE599",  # currently taking
-    "planned": "#ABD9FF",  # planned to take
-    "future": "#9E9E9E",  # prereq met, but planned not to take
-    "locked": "#AD291F",  # prereq not met
+    "completed":    "#B4FFB6",  # already completed
+    "in_progress":  "#FFE599",  # currently taking
+    "planned":      "#ABD9FF",  # planned to take
+    "future":       "#FFA9A3",  # prereq met, but planned not to take
+    "locked":       "#9E9E9E",  # prereq not met
 }
 
 
