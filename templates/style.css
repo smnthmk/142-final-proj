@@ -98,13 +98,29 @@ form {
     width: 300px;
 }
 
+.input-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
 label {
     font-weight: 700;
     font-size: 0.74rem;
     color: #272d37;
-    margin-bottom: 6px;
-    padding-left: 12px;
     letter-spacing: 0.04em;
+}
+
+.inline-error {
+    color: #9b1c1c;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: right;
+    white-space: nowrap;
 }
 
 input {

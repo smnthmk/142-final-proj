@@ -3,7 +3,7 @@ import json
 import os
 from pathlib import Path
 
-from flask import Flask, flash, redirect, render_template, request, send_from_directory, session, url_for
+from flask import Flask, redirect, render_template, request, send_from_directory, session, url_for
 
 from algorithm import buildGraduationPlan
 from graph import study_plan_graph
@@ -110,9 +110,19 @@ def login():
     password = request.form.get("password", "")
 
     student = find_student(student_number)
-    if not student or student.get("password") != password:
-        flash("Invalid student number or password.", "error")
-        return render_template("login.html", error="Invalid student number or password.")
+    if not student:
+        return render_template(
+            "login.html",
+            error="No student found.",
+            student_number=student_number,
+        )
+
+    if student.get("password") != password:
+        return render_template(
+            "login.html",
+            error="Incorrect password.",
+            student_number=student_number,
+        )
 
     session.clear()
     session["student_number"] = student_number

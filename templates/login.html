@@ -26,12 +26,22 @@
 
         <form action="/login" method="POST">
             <div class="input-group">
-                <label for="student-number">STUDENT NUMBER:</label>
-                <input type="text" id="student-number" name="student-number" required>
+                <div class="input-label-row">
+                    <label for="student-number">STUDENT NUMBER:</label>
+                    {% if error == "No student found." %}
+                    <span class="inline-error" role="alert">{{ error }}</span>
+                    {% endif %}
+                </div>
+                <input type="text" id="student-number" name="student-number" value="{{ student_number or '' }}" required>
             </div>
 
             <div class="input-group">
-                <label for="password">PASSWORD</label>
+                <div class="input-label-row">
+                    <label for="password">PASSWORD</label>
+                    {% if error == "Incorrect password." %}
+                    <span class="inline-error" role="alert">{{ error }}</span>
+                    {% endif %}
+                </div>
                 <input type="password" id="password" name="password" required>
             </div>
 
