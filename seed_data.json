@@ -225,7 +225,7 @@
         {
             "course_code":"CMSC 195",
             "name":"Practicum",
-            "semester_availability":["3rd"],
+            "semester_availability":["midyear"],
             "year_level": 3,
             "prerequisites": ["CMSC 129"]
         },

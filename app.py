@@ -169,6 +169,7 @@ def dashboard():
         student=student,
         selected_courses=session.get("selected_courses", []),
         result=result,
+        courses=courses
     )
 
 
