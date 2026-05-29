@@ -91,10 +91,10 @@ def study_plan_graph(courses, completed_courses, in_progress_courses, planned_co
         prereq_text = ", ".join(prereqs) if prereqs else "None"
 
         tooltip = (
-            f"<b>{code}</b><br>"
-            f"{name}<br><br>"
-            f"<b>Status:</b> {status.replace('_', ' ').title()}<br>"
-            f"<b>Prerequisites:</b> {prereq_text}"
+            f"{code}\n"
+            f"{name}\n\n"
+            f"Status: {status.replace('_', ' ').title()}\n"
+            f"Prerequisites: {prereq_text}"
         )
 
         net.add_node(
