@@ -37,6 +37,14 @@ def find_student(student_number):
     return None
 
 
+def render_login(error=None, student_number=""):
+    return render_template(
+        "login.html",
+        error=error,
+        student_number=student_number,
+    )
+
+
 def normalize_student_for_algorithm(student, selected_courses=None):
     in_progress = selected_courses
     if in_progress is None:
@@ -111,18 +119,10 @@ def login():
 
     student = find_student(student_number)
     if not student:
-        return render_template(
-            "login.html",
-            error="No student found.",
-            student_number=student_number,
-        )
+        return render_login("No student found.", student_number)
 
     if student.get("password") != password:
-        return render_template(
-            "login.html",
-            error="Incorrect password.",
-            student_number=student_number,
-        )
+        return render_login("Incorrect password.", student_number)
 
     session.clear()
     session["student_number"] = student_number
