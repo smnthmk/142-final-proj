@@ -198,6 +198,17 @@ def dashboard():
             bucket["year_level"] = current_year
             current_sem = bucket["semester"]
 
+    if result.get("success"):
+        current_year = student.get("year_level", 1)
+        current_sem = student.get("current_semester", "1st")
+        
+        for bucket in result["semester_buckets"]:
+            # Increment year level when cycling back to a 1st semester
+            if bucket["semester"] == "1st" and current_sem in ["2nd", "midyear"]:
+                current_year += 1
+            bucket["year_level"] = current_year
+            current_sem = bucket["semester"]
+
     return render_template(
         "dashboard.html",
         student=student,
